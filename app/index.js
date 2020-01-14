@@ -4,6 +4,10 @@ import {
   Text,
   View
 } from "react-native";
+import {
+  DebugInstructions,
+  ReloadInstructions,
+} from "react-native/Libraries/NewAppScreen";
 
 const styles = StyleSheet.create({
   container: {
@@ -24,21 +28,23 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class App extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Tic Tac Toe!
-        </Text>
-        <Text style={styles.instructions}>
-          Insert a Tic Tac Toe game here.
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
-  }
-}
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.welcome}>
+        Welcome to Tic Tac Toe!
+      </Text>
+      <Text style={styles.instructions}>
+        Insert a Tic Tac Toe game here.
+      </Text>
+      <Text style={styles.instructions}>
+        <ReloadInstructions />
+      </Text>
+      <Text style={styles.instructions}>
+        <DebugInstructions />
+      </Text>
+    </View>
+  );
+};
+
+export default App;

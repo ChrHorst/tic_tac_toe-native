@@ -18,7 +18,7 @@
 
 ## Environment
 
-* [NodeJS](https://nodejs.org) (Version 7.7)
+* [NodeJS](https://nodejs.org) (Version 12.14)
 * Build the app for iOS or Android
   * iOS requires an Mac with MacOS and XCode >= 8.2
   * Android works on MacOS, Windows and Linux, but requires an Android development environment
