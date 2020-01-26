@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         borderWidth: 5,
         borderColor: 'gray',
         minHeight: 100,
-        minWidth: 100
+        minWidth: 100,
+        maxHeight: 150,
     },
 });
 

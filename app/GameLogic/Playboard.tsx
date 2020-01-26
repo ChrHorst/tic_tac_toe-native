@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {Dimensions} from "react-native";
 import PlaySquare from "./PlaySquare";
 
@@ -11,6 +11,9 @@ interface State {
     playboardValues: playboard
     playboardHeight: number;
     nextValue: 0|1;
+    gameFinished: boolean;
+    gameStarted: boolean;
+    winner?: playboardValue;
 }
 
 export type playboardValue = 0|1| null;
@@ -31,6 +34,8 @@ export class Playboard extends React.Component<Props, State> {
             playboardValues: playboard,
             playboardHeight: Dimensions.get('window').height - 500,
             nextValue: 0,
+            gameFinished: false,
+            gameStarted: false,
         };
     }
 
@@ -39,10 +44,16 @@ export class Playboard extends React.Component<Props, State> {
         this.setState({
             playboardValues: playboard,
             nextValue: 0,
+            gameFinished: false,
+            gameStarted: true,
+            winner: null,
         })
     }
 
     addValue(x: playboardRange, y: playboardRange){
+        if (this.state.gameStarted === false || this.state.gameFinished === true) {
+            return;
+        }
         const nextValue =  this.state.nextValue;
         var currentPlayboard: playboard =this.state.playboardValues;
         currentPlayboard[x][y] = nextValue;
@@ -50,6 +61,13 @@ export class Playboard extends React.Component<Props, State> {
             playboardValues: currentPlayboard,
             nextValue: nextValue === 0 ? 1: 0,
         });
+        const gameFinished = this.checkWinningCondition();
+        if (gameFinished !== false) {
+            this.setState({
+                gameFinished: true,
+                winner: gameFinished
+            })
+        }
     }
 
     checkWinningCondition(): false | playboardValue {
@@ -98,27 +116,44 @@ export class Playboard extends React.Component<Props, State> {
         return false;
     }
 
+    startGame() {
+
+    }
+
     render() {
         const height = this.state.playboardHeight;
         const playboard = this.state.playboardValues;
         return(
-            <View style={ [styles.outerContainer, {minHeight: height, minWidth: Dimensions.get('window').width -100}]}>
-                <View style={styles.innerContainer}>
-                    <PlaySquare value={playboard[0][0]} onClick={() => this.addValue(0,0)}/>
-                    <PlaySquare value={playboard[0][1]} onClick={() => this.addValue(0,1)}/>
-                    <PlaySquare value={playboard[0][2]} onClick={() => this.addValue(0,2)}/>
+            <View>
+                <View style={ [styles.outerContainer, {minHeight: height, minWidth: Dimensions.get('window').width -100}]}>
+                    <View style={styles.innerContainer}>
+                        <PlaySquare value={playboard[0][0]} onClick={() => this.addValue(0,0)}/>
+                        <PlaySquare value={playboard[0][1]} onClick={() => this.addValue(0,1)}/>
+                        <PlaySquare value={playboard[0][2]} onClick={() => this.addValue(0,2)}/>
+                    </View>
+                    <View style={styles.innerContainer}>
+                        <PlaySquare value={playboard[1][0]} onClick={() => this.addValue(1,0)}/>
+                        <PlaySquare value={playboard[1][1]} onClick={() => this.addValue(1,1)}/>
+                        <PlaySquare value={playboard[1][2]} onClick={() => this.addValue(1,2)}/>
+                    </View>
+                    <View style={styles.innerContainer}>
+                        <PlaySquare value={playboard[2][0]} onClick={() => this.addValue(2,0)}/>
+                        <PlaySquare value={playboard[2][1]} onClick={() => this.addValue(2,1)}/>
+                        <PlaySquare value={playboard[2][2]} onClick={() => this.addValue(2,2)}/>
+                    </View>
                 </View>
-                <View style={styles.innerContainer}>
-                    <PlaySquare value={playboard[1][0]} onClick={() => this.addValue(1,0)}/>
-                    <PlaySquare value={playboard[1][1]} onClick={() => this.addValue(1,1)}/>
-                    <PlaySquare value={playboard[1][2]} onClick={() => this.addValue(1,2)}/>
-                </View>
-                <View style={styles.innerContainer}>
-                    <PlaySquare value={playboard[2][0]} onClick={() => this.addValue(2,0)}/>
-                    <PlaySquare value={playboard[2][1]} onClick={() => this.addValue(2,1)}/>
-                    <PlaySquare value={playboard[2][2]} onClick={() => this.addValue(2,2)}/>
+                <View>
+                    {this.state.gameStarted ?
+                        this.state.gameFinished ?
+                            <View>
+                                <Text>Player {this.state.winner} wins</Text>
+                                <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
+                            </View>
+                            :<Text>Players {this.state.nextValue } turn </Text> :
+                        <Button title={'Start Game'} onPress={() => this.initPlayground()}/>}
                 </View>
             </View>
+
         )
     }
 }
@@ -127,6 +162,8 @@ const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
         flexDirection: 'column',
+        justifyContent: 'flex-start',
+        maxHeight: 450,
     },
     innerContainer: {
         flex: 1,
