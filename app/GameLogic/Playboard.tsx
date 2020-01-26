@@ -61,11 +61,16 @@ export class Playboard extends React.Component<Props, State> {
             playboardValues: currentPlayboard,
             nextValue: nextValue === 0 ? 1: 0,
         });
-        const gameFinished = this.checkWinningCondition();
+        if (this.checkDraw() === false) {
+            var gameFinished = this.checkWinningCondition();
+        }
+        else {
+            gameFinished = null;
+        }
         if (gameFinished !== false) {
             this.setState({
                 gameFinished: true,
-                winner: gameFinished
+                winner: gameFinished,
             })
         }
     }
@@ -116,8 +121,16 @@ export class Playboard extends React.Component<Props, State> {
         return false;
     }
 
-    startGame() {
-
+    checkDraw() {
+        const playground = this.state.playboardValues;
+        for (let i=0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (playground[i][j] === null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     render() {
@@ -146,7 +159,7 @@ export class Playboard extends React.Component<Props, State> {
                     {this.state.gameStarted ?
                         this.state.gameFinished ?
                             <View>
-                                <Text>Player {this.state.winner} wins</Text>
+                                <Text>{this.state.winner === null ? 'Draw!' : 'Player ' + this.state.winner + 'wins'}</Text>
                                 <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
                             </View>
                             :<Text>Players {this.state.nextValue } turn </Text> :
