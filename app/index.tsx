@@ -8,6 +8,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from "react-native/Libraries/NewAppScreen";
+import {Playboard} from "./GameLogic/Playboard";
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +38,7 @@ const App = (): JSX.Element => {
       <Text style={styles.instructions}>
         Insert a Tic Tac Toe game here.
       </Text>
+        <Playboard/>
       <Text style={styles.instructions}>
         <ReloadInstructions />
       </Text>
