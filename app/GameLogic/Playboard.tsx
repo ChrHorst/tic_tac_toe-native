@@ -51,11 +51,11 @@ export class Playboard extends React.Component<Props, State> {
     }
 
     addValue(x: playboardRange, y: playboardRange){
-        if (this.state.gameStarted === false || this.state.gameFinished === true) {
-            return;
-        }
         const nextValue =  this.state.nextValue;
         var currentPlayboard: playboard =this.state.playboardValues;
+        if (this.state.gameStarted === false || this.state.gameFinished === true || currentPlayboard[x][y] !== null) {
+            return;
+        }
         currentPlayboard[x][y] = nextValue;
         this.setState({
             playboardValues: currentPlayboard,
