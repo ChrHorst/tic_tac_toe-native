@@ -35,16 +35,7 @@ const App = (): JSX.Element => {
       <Text style={styles.welcome}>
         Welcome to Tic Tac Toe!
       </Text>
-      <Text style={styles.instructions}>
-        Insert a Tic Tac Toe game here.
-      </Text>
-        <Playboard/>
-      <Text style={styles.instructions}>
-        <ReloadInstructions />
-      </Text>
-      <Text style={styles.instructions}>
-        <DebugInstructions />
-      </Text>
+      <Playboard/>
     </View>
   );
 };

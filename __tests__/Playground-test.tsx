@@ -13,19 +13,19 @@ it('test playground init', () => {
 it('test playground addValue',  () => {
     const component = renderer.create(<Playboard/>);
     const instance = component.getInstance() as Playboard;
-    instance.addValue(1,2,1);
-    expect(instance.state.playboardValues).toStrictEqual([[null, null, null], [null, null, 1], [null, null, null]]);
+    instance.addValue(1,2);
+    expect(instance.state.playboardValues).toStrictEqual([[null, null, null], [null, null, 0], [null, null, null]]);
 });
 
 it('test finish game', () => {
     const component = renderer.create(<Playboard/>);
     const instance = component.getInstance() as Playboard;
-    instance.addValue(1,1,1);
+    instance.addValue(1,1);
     expect(instance.checkWinningCondition()).toBe(false);
-    instance.addValue(0,0,0);
-    instance.addValue(0,1,1);
-    instance.addValue(0,2,0);
+    instance.addValue(0,0);
+    instance.addValue(0,1);
+    instance.addValue(0,2);
     expect(instance.checkWinningCondition()).toBe(false);
-    instance.addValue(2,1,1);
-    expect(instance.checkWinningCondition()).toBe(1);
+    instance.addValue(2,1);
+    expect(instance.checkWinningCondition()).toBe(0);
 });
