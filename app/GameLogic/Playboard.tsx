@@ -42,6 +42,52 @@ export class Playboard extends React.Component<Props, State> {
         });
     }
 
+    checkWinningCondition(): false | playboardValue {
+        const playboard = this.state.playboardValues;
+        //check x rows
+        for (var i= 0; i < 3; i++) {
+            let result = this.checkRow(playboard[i]);
+            if (result !== false) {
+                return result;
+            }
+        }
+        //check y rows:
+        for (var i = 0; i < 3; i++) {
+            let result = this.checkRow(this.getYRow(i as playboardRange));
+            if (result !== false) {
+                return result;
+            }
+        }
+        // check vertical rows
+        let result = this.checkRow([playboard[0][0], playboard[1][1], playboard[2][2]]);
+        if (result !== false) {
+            return result;
+        }
+        result = this.checkRow([playboard[0][2], playboard[1][1], playboard[2][0]]);
+        if (result !== false) {
+            return result
+        }
+        return false;
+    }
+
+    getYRow (key: playboardRange): playboardRow {
+        const playboard = this.state.playboardValues;
+        return([playboard[0][key], playboard[1][key], playboard[2][key]])
+    }
+
+    checkRow(row: playboardRow): false | playboardValue {
+        if (row[0] !== null) {
+            if (row[1] !== row[0]) {
+                return false;
+            }
+            if (row[2] !== row[0]) {
+                return false;
+            }
+            return row[0];
+        }
+        return false;
+    }
+
     render() {
         return(<Text/>)
     }
