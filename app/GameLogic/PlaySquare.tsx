@@ -2,14 +2,14 @@ import React from 'react';
 import {StyleSheet, View, Text, ViewStyle, Image} from "react-native";
 import {playboardValue} from "./Playboard";
 
-interface Props {
+interface PlaySquareProps {
     value: playboardValue;
     onClick: () => void;
     wide: number;
     borderStyle?: ViewStyle[];
 }
 
-const PlaySquare = (props: Props): JSX.Element => {
+const PlaySquare = (props: PlaySquareProps): JSX.Element => {
     return (
         <View style={[styles.container, props.borderStyle, {
             minHeight: props.wide,

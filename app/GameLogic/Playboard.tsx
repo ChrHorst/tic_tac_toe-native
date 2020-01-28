@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Image, StyleSheet, Text, View} from 'react-native';
 import {Dimensions} from "react-native";
 import PlaySquare from "./PlaySquare";
+import WinningText from './WinningText'
 
 interface Props {
 
@@ -147,11 +148,7 @@ export class Playboard extends React.Component<Props, State> {
                                 onPress={() => this.setState({gameFinished: true})}>ABORT</Text>
                         : <Text style={styles.flexText}/>}
                 </View>
-                {this.state.gameFinished ?
-                    <View style={{flex: 3}}>
-                        <Text>{this.state.winner === null ? 'Draw!' : 'Player ' + this.state.winner + 'wins'}</Text>
-                        <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
-                    </View>
+                {this.state.gameFinished ? <WinningText winner={this.state.winner}/>
                     :
                     <View
                         style={[styles.playboardContainer, this.state.gameStarted && !this.state.gameFinished && {backgroundColor: '#8a85bd'}]}>
@@ -208,6 +205,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 'auto',
         alignItems: 'center',
+        backgroundColor: '#ececee'
     },
     rowContainer: {
         flexDirection: 'row',
