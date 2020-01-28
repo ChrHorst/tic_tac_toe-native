@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, Image, StyleSheet, Text, View} from 'react-native';
 import {Dimensions} from "react-native";
 import PlaySquare from "./PlaySquare";
 
@@ -176,7 +176,12 @@ export class Playboard extends React.Component<Props, State> {
                 }
                 <View style={styles.bottomContainer}>
                     {this.state.gameStarted && !this.state.gameFinished ?
-                        <Text>Players {this.state.nextValue} turn </Text>
+                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline'}}>
+                            <Image
+                                source={this.state.nextValue === 0 ? require('../../assets/O-tiktak.png') : require('../../assets/X-tiktak.png')}
+                                style={styles.nextPlayerThumbtail}/>
+                            <Text style={styles.turnText}>s TURN </Text>
+                        </View>
                         : <Button title={'Start Game'} onPress={() => this.initPlayground()}/>}
                 </View>
             </View>
@@ -216,5 +221,14 @@ const styles = StyleSheet.create({
     },
     topBorder: {
         borderTopWidth: 8,
+    },
+    nextPlayerThumbtail: {
+        height: 32,
+        width: 32,
+        resizeMode: 'contain'
+    },
+    turnText: {
+        fontSize: 28,
+        color: '#9c9cac',
     }
 });
