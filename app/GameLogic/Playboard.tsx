@@ -62,16 +62,17 @@ export class Playboard extends React.Component<Props, State> {
             playboardValues: currentPlayboard,
             nextValue: nextValue === 0 ? 1 : 0,
         });
-        if (this.checkDraw() === false) {
-            var gameFinished = this.checkWinningCondition();
-        }
-        else {
-            gameFinished = null;
-        }
+        var gameFinished = this.checkWinningCondition();
         if (gameFinished !== false) {
             this.setState({
                 gameFinished: true,
                 winner: gameFinished,
+            })
+        }
+        else if (this.checkDraw()) {
+            this.setState({
+                gameFinished: true,
+                winner: null,
             })
         }
     }
