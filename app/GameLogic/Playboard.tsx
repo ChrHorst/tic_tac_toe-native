@@ -137,7 +137,6 @@ export class Playboard extends React.Component<Props, State> {
         const height = this.state.playboardHeight;
         const playboard = this.state.playboardValues;
         const squareWide = (Dimensions.get("window").width - 40) / 3;
-        console.log('SqureWide: ', squareWide);
         return (
             <View style={styles.outerContainer}>
                 <View style={styles.topContainer}>
@@ -213,9 +212,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     rightBorder: {
-        borderRightWidth: 5,
+        borderRightWidth: 8,
     },
     topBorder: {
-        borderTopWidth: 5,
+        borderTopWidth: 8,
     }
 });

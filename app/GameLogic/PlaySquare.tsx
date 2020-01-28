@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, ViewStyle} from "react-native";
+import {StyleSheet, View, Text, ViewStyle, Image} from "react-native";
 import {playboardValue} from "./Playboard";
 
 interface Props {
@@ -17,9 +17,14 @@ const PlaySquare = (props: Props): JSX.Element => {
             maxWidth: props.wide,
             minWidth: props.wide
         }]} onTouchEnd={props.onClick}>
-            <Text>
-                {props.value === null ? '' : props.value === 0 ? '0' : 'X'}
-            </Text>
+            {
+                props.value !== null ?
+                    <Image
+                        source={props.value === 0 ?require( '../../assets/O-tiktak.png') : require('../../assets/X-tiktak.png')}
+                        style={styles.image} />
+                    :
+                    <Text/>
+            }
         </View>
     )
 };
@@ -32,6 +37,11 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         padding: 10,
     },
+    image: {
+        height: '85%',
+        width: '85%',
+        resizeMode: 'contain',
+    }
 });
 
 export default PlaySquare;
