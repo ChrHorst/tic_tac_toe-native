@@ -140,15 +140,21 @@ export class Playboard extends React.Component<Props, State> {
         return (
             <View style={styles.outerContainer}>
                 <View style={styles.topContainer}>
-                    <Text> Hier wird was stehen</Text>
+                    <Text style={styles.flexText}/>
+                    <Text style={[styles.defaultText, {flex: 2}]}>TICK TAK</Text>
+                    {this.state.gameStarted && !this.state.gameFinished
+                        ? <Text style={[styles.defaultText, styles.abortText]}
+                                onPress={() => this.setState({gameFinished: true})}>ABORT</Text>
+                        : <Text style={styles.flexText}/>}
                 </View>
                 {this.state.gameFinished ?
-                    <View>
+                    <View style={{flex: 3}}>
                         <Text>{this.state.winner === null ? 'Draw!' : 'Player ' + this.state.winner + 'wins'}</Text>
                         <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
                     </View>
                     :
-                    <View style={[styles.playboardContainer, {minHeight: height}]}>
+                    <View
+                        style={[styles.playboardContainer, this.state.gameStarted && !this.state.gameFinished && {backgroundColor: '#8a85bd'}]}>
                         <View style={styles.rowContainer}>
                             <PlaySquare value={playboard[0][0]} onClick={() => this.addValue(0, 0)} wide={squareWide}
                                         borderStyle={[styles.rightBorder]}/>
@@ -180,7 +186,7 @@ export class Playboard extends React.Component<Props, State> {
                             <Image
                                 source={this.state.nextValue === 0 ? require('../../assets/O-tiktak.png') : require('../../assets/X-tiktak.png')}
                                 style={styles.nextPlayerThumbtail}/>
-                            <Text style={styles.turnText}>s TURN </Text>
+                            <Text style={styles.defaultText}>s TURN </Text>
                         </View>
                         : <Button title={'Start Game'} onPress={() => this.initPlayground()}/>}
                 </View>
@@ -193,23 +199,26 @@ export class Playboard extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
-        marginLeft: 20,
-        marginRight: 20,
+        width: '100%',
+        height: '100%',
     },
     playboardContainer: {
-        flex: 1,
+        flex: 3,
         flexDirection: 'column',
-        width: '100%',
         justifyContent: 'center',
-        alignItems: 'baseline'
+        marginVertical: 'auto',
+        alignItems: 'center',
     },
     rowContainer: {
         flexDirection: 'row',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
     },
     topContainer: {
         flex: 1,
-        justifyContent: 'flex-start'
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: 10,
     },
     bottomContainer: {
         flex: 1,
@@ -227,8 +236,18 @@ const styles = StyleSheet.create({
         width: 32,
         resizeMode: 'contain'
     },
-    turnText: {
+    defaultText: {
         fontSize: 28,
         color: '#9c9cac',
+        textAlign: 'center'
+    },
+    flexText: {
+        flex: 1
+    },
+    abortText: {
+        flex: 1,
+        fontSize: 16,
+        textDecorationLine: 'underline',
+        textAlign: 'right',
     }
 });
