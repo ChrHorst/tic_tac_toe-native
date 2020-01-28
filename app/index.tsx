@@ -4,10 +4,6 @@ import {
   Text,
   View
 } from "react-native";
-import {
-  DebugInstructions,
-  ReloadInstructions,
-} from "react-native/Libraries/NewAppScreen";
 import {Playboard} from "./GameLogic/Playboard";
 
 const styles = StyleSheet.create({

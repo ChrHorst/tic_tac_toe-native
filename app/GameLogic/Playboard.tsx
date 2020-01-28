@@ -10,16 +10,16 @@ interface Props {
 interface State {
     playboardValues: playboard
     playboardHeight: number;
-    nextValue: 0|1;
+    nextValue: 0 | 1;
     gameFinished: boolean;
     gameStarted: boolean;
     winner?: playboardValue;
 }
 
-export type playboardValue = 0|1| null;
-export type playboardRange = 0|1|2;
+export type playboardValue = 0 | 1 | null;
+export type playboardRange = 0 | 1 | 2;
 export type playboardRow = FixedArray<playboardValue, 3>;
-export type playboard = FixedArray<playboardRow,3>
+export type playboard = FixedArray<playboardRow, 3>
 
 interface FixedArray<T, L extends number> extends Array<T> {
     0: T;
@@ -50,16 +50,16 @@ export class Playboard extends React.Component<Props, State> {
         })
     }
 
-    addValue(x: playboardRange, y: playboardRange){
-        const nextValue =  this.state.nextValue;
-        var currentPlayboard: playboard =this.state.playboardValues;
+    addValue(x: playboardRange, y: playboardRange) {
+        const nextValue = this.state.nextValue;
+        var currentPlayboard: playboard = this.state.playboardValues;
         if (this.state.gameStarted === false || this.state.gameFinished === true || currentPlayboard[x][y] !== null) {
             return;
         }
         currentPlayboard[x][y] = nextValue;
         this.setState({
             playboardValues: currentPlayboard,
-            nextValue: nextValue === 0 ? 1: 0,
+            nextValue: nextValue === 0 ? 1 : 0,
         });
         if (this.checkDraw() === false) {
             var gameFinished = this.checkWinningCondition();
@@ -78,7 +78,7 @@ export class Playboard extends React.Component<Props, State> {
     checkWinningCondition(): false | playboardValue {
         const playboard = this.state.playboardValues;
         //check x rows
-        for (var i= 0; i < 3; i++) {
+        for (var i = 0; i < 3; i++) {
             let result = this.checkRow(playboard[i]);
             if (result !== false) {
                 return result;
@@ -103,9 +103,9 @@ export class Playboard extends React.Component<Props, State> {
         return false;
     }
 
-    getYRow (key: playboardRange): playboardRow {
+    getYRow(key: playboardRange): playboardRow {
         const playboard = this.state.playboardValues;
-        return([playboard[0][key], playboard[1][key], playboard[2][key]])
+        return ([playboard[0][key], playboard[1][key], playboard[2][key]])
     }
 
     checkRow(row: playboardRow): false | playboardValue {
@@ -123,7 +123,7 @@ export class Playboard extends React.Component<Props, State> {
 
     checkDraw() {
         const playground = this.state.playboardValues;
-        for (let i=0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 3; j++) {
                 if (playground[i][j] === null) {
                     return false;
@@ -136,34 +136,49 @@ export class Playboard extends React.Component<Props, State> {
     render() {
         const height = this.state.playboardHeight;
         const playboard = this.state.playboardValues;
-        return(
-            <View>
-                <View style={ [styles.outerContainer, {minHeight: height, minWidth: Dimensions.get('window').width -100}]}>
-                    <View style={styles.innerContainer}>
-                        <PlaySquare value={playboard[0][0]} onClick={() => this.addValue(0,0)}/>
-                        <PlaySquare value={playboard[0][1]} onClick={() => this.addValue(0,1)}/>
-                        <PlaySquare value={playboard[0][2]} onClick={() => this.addValue(0,2)}/>
-                    </View>
-                    <View style={styles.innerContainer}>
-                        <PlaySquare value={playboard[1][0]} onClick={() => this.addValue(1,0)}/>
-                        <PlaySquare value={playboard[1][1]} onClick={() => this.addValue(1,1)}/>
-                        <PlaySquare value={playboard[1][2]} onClick={() => this.addValue(1,2)}/>
-                    </View>
-                    <View style={styles.innerContainer}>
-                        <PlaySquare value={playboard[2][0]} onClick={() => this.addValue(2,0)}/>
-                        <PlaySquare value={playboard[2][1]} onClick={() => this.addValue(2,1)}/>
-                        <PlaySquare value={playboard[2][2]} onClick={() => this.addValue(2,2)}/>
-                    </View>
+        const squareWide = (Dimensions.get("window").width - 40) / 3;
+        console.log('SqureWide: ', squareWide);
+        return (
+            <View style={styles.outerContainer}>
+                <View style={styles.topContainer}>
+                    <Text> Hier wird was stehen</Text>
                 </View>
-                <View>
-                    {this.state.gameStarted ?
-                        this.state.gameFinished ?
-                            <View>
-                                <Text>{this.state.winner === null ? 'Draw!' : 'Player ' + this.state.winner + 'wins'}</Text>
-                                <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
-                            </View>
-                            :<Text>Players {this.state.nextValue } turn </Text> :
-                        <Button title={'Start Game'} onPress={() => this.initPlayground()}/>}
+                {this.state.gameFinished ?
+                    <View>
+                        <Text>{this.state.winner === null ? 'Draw!' : 'Player ' + this.state.winner + 'wins'}</Text>
+                        <Button title={'Restart Game'} onPress={() => this.initPlayground()}/>
+                    </View>
+                    :
+                    <View style={[styles.playboardContainer, {minHeight: height}]}>
+                        <View style={styles.rowContainer}>
+                            <PlaySquare value={playboard[0][0]} onClick={() => this.addValue(0, 0)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder]}/>
+                            <PlaySquare value={playboard[0][1]} onClick={() => this.addValue(0, 1)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder]}/>
+                            <PlaySquare value={playboard[0][2]} onClick={() => this.addValue(0, 2)} wide={squareWide}/>
+                        </View>
+                        <View style={styles.rowContainer}>
+                            <PlaySquare value={playboard[1][0]} onClick={() => this.addValue(1, 0)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder, styles.topBorder]}/>
+                            <PlaySquare value={playboard[1][1]} onClick={() => this.addValue(1, 1)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder, styles.topBorder]}/>
+                            <PlaySquare value={playboard[1][2]} onClick={() => this.addValue(1, 2)} wide={squareWide}
+                                        borderStyle={[styles.topBorder]}/>
+                        </View>
+                        <View style={styles.rowContainer}>
+                            <PlaySquare value={playboard[2][0]} onClick={() => this.addValue(2, 0)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder, styles.topBorder]}/>
+                            <PlaySquare value={playboard[2][1]} onClick={() => this.addValue(2, 1)} wide={squareWide}
+                                        borderStyle={[styles.rightBorder, styles.topBorder]}/>
+                            <PlaySquare value={playboard[2][2]} onClick={() => this.addValue(2, 2)} wide={squareWide}
+                                        borderStyle={[styles.topBorder]}/>
+                        </View>
+                    </View>
+                }
+                <View style={styles.bottomContainer}>
+                    {this.state.gameStarted && !this.state.gameFinished ?
+                        <Text>Players {this.state.nextValue} turn </Text>
+                        : <Button title={'Start Game'} onPress={() => this.initPlayground()}/>}
                 </View>
             </View>
 
@@ -174,12 +189,33 @@ export class Playboard extends React.Component<Props, State> {
 const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        maxHeight: 450,
+        marginLeft: 20,
+        marginRight: 20,
     },
-    innerContainer: {
+    playboardContainer: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'column',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'baseline'
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    topContainer: {
+        flex: 1,
+        justifyContent: 'flex-start'
+    },
+    bottomContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
+    rightBorder: {
+        borderRightWidth: 5,
+    },
+    topBorder: {
+        borderTopWidth: 5,
     }
 });
